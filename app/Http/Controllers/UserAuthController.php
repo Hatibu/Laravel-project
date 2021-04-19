@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Admin;
+use App\Models\Member;
 use Illuminate\Support\Facades\Hash;
 
 class UserAuthController extends Controller
 {
+
     function login(){
         return view('auth.login');
         //echo 'login page';
@@ -17,18 +18,22 @@ class UserAuthController extends Controller
        // echo 'register page';
     }
     function save(Request $request){
-        //Validate request
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:admins',
-            'password' => 'required|min:5|max:12'
-        ]);
+        //Validate user request
+        // $request->validate([
+        //     'name' => 'required',
+        //     'email' => 'required|email|unique:members',
+        //     'phone' => 'required',
+        //     'password' => 'required|min:5|max:12'
+        // ]);
         //insert data into database
-        $admin = new Admin;
-        $admin->name = $request->name;
-        $admin->email = $request->email;
-        $admin->password = Hash::make($request->password);
-        $save=$admin->save();
+        $member = new Member;
+        $member->first_name = $request->fname;
+        $member->last_name = $request->lname;
+        $member->email = $request->email;
+        $member->phone_number = $request->phone;
+        $member->role = 'ADMIN';
+        $member->password = Hash::make($request->password);
+        $save=$member->save();
 
         if($save){
             return back()->with('Success','New User has been successfuly added');
@@ -44,7 +49,7 @@ class UserAuthController extends Controller
             'email'=>'required|email',
             'password' => 'required|min:5|max:12'
         ]);
-        $userInfo = Admin::where('email','=',$request->email)->first();
+        $userInfo = Member::where('email','=',$request->email)->first();
         if(!$userInfo){
             return back()->with('fail','Incorrect email address');
         }else{
@@ -60,11 +65,12 @@ class UserAuthController extends Controller
     function logout(){
         if(session()->has('LoggedUser')){
             session()->pull('LoggedUser');
-            return redirect('login');
+            return redirect('/auth/login');
         }
     }
     function dashboard(){
-        $data = ['LoggedUserInfo'=>Admin::where('id','=',session('LoggedUser'))->first()];
+        $data = ['LoggedUserInfo'=>Member::where('id','=',session('LoggedUser'))->first()];
         return view('admin.dashboard',$data);
     }
+
 }
