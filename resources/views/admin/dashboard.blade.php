@@ -3,14 +3,8 @@
  {{-- @include('layouts.navigation') --}}
   @include('layouts.sideBar')
   @include('layouts.dashBody')
-  <script >
-    $(function() {
-$('#sidebarCollapse').on('click', function() {
-  $('#sidebar, #content').toggleClass('active');
-});
-});
-
-</script>
+  @include('layouts.javascript')
+<script src="{{ asset('js/main.js') }}" type="text/javascript"></script>
 
 
 @endsection

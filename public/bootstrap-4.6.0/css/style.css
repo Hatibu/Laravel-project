@@ -51,3 +51,11 @@ a:hover {
 }
 
 /*End Modal for add new user for admin */
+/* export link for dashboard*/
+.export-link{
+    color: black !important;
+    text-decoration: none !important;
+}
+.export-link:hover{
+    color: black !important
+}

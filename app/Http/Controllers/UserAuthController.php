@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Member;
 use Illuminate\Support\Facades\Hash;
+use App\Exports\MemberExport;
+use Excel;
 
 class UserAuthController extends Controller
 {
@@ -71,6 +73,31 @@ class UserAuthController extends Controller
     function dashboard(){
         $data = ['LoggedUserInfo'=>Member::where('id','=',session('LoggedUser'))->first()];
         return view('admin.dashboard',$data);
+    }
+    function update(request $request,$id){
+        $member = Member::find($id);
+        $member->first_name = $request->fname;
+        $member->last_name = $request->lname;
+        $member->email = $request->email;
+        $member->phone_number = $request->phone;
+         $member->role = 'ADMIN';
+         $save=$member->save();
+
+
+    }
+
+    function delete($id){
+        $member = Member::find($id);
+        $member->delete();
+        return $member;
+
+    }
+
+    public function exportIntoExcel(){
+        return Excel::download(new MemberExport,'memberslist.xlsx');
+    }
+    public function exportIntoCSV(){
+        return Excel::download(new MemberExport,'memberslist.csv');
     }
 
 }
