@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\controllers\UserAuthController;
 use App\Http\controllers\PagesController;
 use App\Http\controllers\UserProfileController;
-use App\Http\controllers\SmsController;
+use App\Http\controllers\MailController;
 
 
 
@@ -45,7 +45,10 @@ Route::get('/admin/user_profile',[UserProfileController::class,'index']);
 
 
 // From sms controller
-Route::get('/send-sms',[SmsController::class,'sendMessage']);
+Route::get('/send-email',[MailController::class,'sendEmail']);
+// From sms controller
+Route::get('/contact-mail',[MailController ::class,'contactUs']);
+Route::post('/contact-send',[MailController ::class,'send'])->name('contact.send');
 
 
 

@@ -59,8 +59,11 @@
                         <span class="text-danger">@error('password'){{$message}} @enderror </span>
                     </div>
                     <button type="submit" class="btn btn-block btn-primary" >Sign Up</button>
+                    <div class="d-flex justify-content-center links">
+						Don't have an account? <a href="/auth/login" class="ml-2" style="color: blue !important;">log In</a>
+					</div>
                     <br>
-                    <a href="{{ route('auth.login') }}">I already have account, Sign In</a>
+
                 </form>
 
             </div>

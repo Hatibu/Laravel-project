@@ -3,8 +3,15 @@
 <div class="page-content p-5" id="content">
     <!-- Toggle button -->
 
-    <button id="sidebarCollapse" type="button" class="btn btn-light bg-white rounded-pill shadow-sm px-4 mb-4"><i class="fa fa-bars mr-2"></i><small class="text-uppercase font-weight-bold">Toggle</small></button>
+
+        <svg xmlns="http://www.w3.org/2000/svg"  id="sidebarCollapse"
+        width="36" height="36" fill="white"
+        class="bi bi-list" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+          </svg>
+
   <!-- Modal form -->
+
   <!-- Add new user model -->
   <div class="modal fade" id="add" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -17,11 +24,7 @@
         </div>
         <div class="modal-body">
             <form action="{{route('auth.save')}}" method="POST">
-                @if(Session::get('Success'))
-                    <div class="alert alert-success">
-                        {{ Session::get('Success') }}
-                    </div>
-                    @endif
+
                 @csrf
                 <div class="row">
                     <div class="col-md-6">
@@ -68,9 +71,8 @@
       </div>
     </div>
   </div>
-
-  <!-- view modal -->
-  <div class="modal fade" id="viewData" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <!-- view modal -->
+   <div class="modal fade" id="viewData" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -118,8 +120,7 @@
       </div>
     </div>
   </div>
-    <!--End Modal form-->
-
+    <!--End view modal-->
     <!-- Edit modal -->
   <div class="modal fade" id="EditData" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -174,6 +175,8 @@
   </div>
     <!--End Modal form-->
 
+
+
     <!-- delete modal -->
   <div class="modal fade" id="deleteData" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -226,8 +229,21 @@
             </button>
       </div>
       <!--End of modal buttons-->
+      {{-- Table of data --}}
       <br>
-        <table class="table table-dark table-hover">
+              @if(Session::get('Success'))
+                <div class="alert alert-success">
+                    {{ Session::get('Success') }}
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                </div>
+                @endif
+                @if(Session::get('Success'))
+                <div class="alert alert-success">
+                    {{ Session::get('Success') }}
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                </div>
+                @endif
+        <table class="table table-dark table-hover" id="myTable" cellspacing="0" >
             <thead>
               <tr>
                 <th scope="col">ID</th>
@@ -289,8 +305,21 @@
           </table>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+
+
     </script>
     <script>
+        //for table pagination
+        $(document).ready(function(){
+            $('#myTable').DataTable({
+    "paging": true // false to disable pagination (or any other option)
+  });
+  $('.dataTables_length').addClass('bs-select');
+
+        });
         // Update data function
       $(document).ready(function(){
         $(".memberEdits").click(function(){
@@ -317,7 +346,10 @@
          data:$('#edit_DataForm').serialize(),
         success:function(response){
         //$('#EditData').modal('hide');
-               alert('Data Update');
+           var valid_ = response;
+            if(valid_){
+                alert('Data Update');
+            }
                location.reload();
                 },
                 error:function(error){

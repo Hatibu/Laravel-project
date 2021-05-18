@@ -84,6 +84,7 @@ class UserAuthController extends Controller
          $save=$member->save();
 
 
+
     }
 
     function delete($id){
